@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Check</title>
+    <script>
+        // Функция для определения языков пользователя
+        function detectLanguages() {
+            // Получаем языки из navigator.languages
+            const languages = navigator.languages || [navigator.language || navigator.userLanguage];
+
+            // Преобразуем языки в строку
+            const languageData = JSON.stringify(languages);
+
+            // Отправляем запрос на сервер
+            sendLanguagesToServer(languageData);
+        }
+
+        // Функция для отправки данных на сервер
+        function sendLanguagesToServer(languageData) {
+            fetch('https://example.com', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ languages: languageData })
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Languages sent successfully!');
+                } else {
+                    console.error('Failed to send languages:', response.statusText);
+                }
+            })
+            .catch(error => {
+                console.error('Error sending languages:', error);
+            });
+        }
+
+        // Запуск проверки языков после загрузки страницы
+        window.onload = detectLanguages;
+    </script>
+</head>
+<body>
+    <h1>Language Detection Page</h1>
+    <p>Мы проверяем ваши языковые настройки. Данные будут отправлены на сервер.</p>
+</body>
+</html>
